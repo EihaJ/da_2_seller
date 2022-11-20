@@ -109,14 +109,14 @@ class _ListUsersState extends State<ListUsers> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Username: ${data.data["username"]}",
+            "Username: ${data["username"]}",
             style: TextStyle(fontSize: 18, color: Colors.black),
           ),
           SizedBox(
             width: 20,
           ),
           Text(
-            "Email: ${data.data["email"]}",
+            "Email: ${data["email"]}",
             style: TextStyle(fontSize: 18, color: Colors.black),
           ),
           TextButton(
