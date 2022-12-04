@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'LogInPage.dart';
+import 'LoginPage.dart';
 
 class AdminPage extends StatefulWidget {
   final User user;

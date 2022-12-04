@@ -496,9 +496,9 @@ class _LoginPageState extends State<LoginPage> {
         UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
             email: _emailEditingController.text,
             password: _passwordEditingController.text);
-        User user = result.user;
+       User user = result.user;
 
-        final User currentUser = await firebaseAuth.currentUser;
+        final User currentUser = firebaseAuth.currentUser;
 
         DocumentReference docRef =
             FirebaseFirestore.instance.collection("users").doc(user.uid);

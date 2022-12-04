@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Pages/LogInPage.dart';
+import 'Pages/LoginPage.dart';
 
 void main() => runApp(MaterialApp(
     home: LoginPage()
