@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            color: Colors.blueGrey.withOpacity(0.5),
+            color: Colors.white,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30.0),
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 25.0),
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(100, 10, 100, 0),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.deepOrange.withOpacity(0.8),
+                            color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 25.0),
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(100, 10, 100, 0),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.deepOrange.withOpacity(0.8),
+                            color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
@@ -271,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 25.0),
@@ -302,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -339,7 +339,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(100, 10, 100, 0),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.deepOrange.withOpacity(0.8),
+                            color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
@@ -375,7 +375,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 25.0),
@@ -406,7 +406,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.grey.withOpacity(0.3),
                             elevation: 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -443,7 +443,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.fromLTRB(100, 10, 100, 0),
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.deepOrange.withOpacity(0.8),
+                            color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
@@ -496,7 +496,7 @@ class _LoginPageState extends State<LoginPage> {
         UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
             email: _emailEditingController.text,
             password: _passwordEditingController.text);
-       User user = result.user;
+        User user = result.user;
 
         final User currentUser = firebaseAuth.currentUser;
 
