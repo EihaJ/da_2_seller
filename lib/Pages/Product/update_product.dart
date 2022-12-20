@@ -385,7 +385,8 @@ class _UpdateProductState extends State<UpdateProduct> {
   }
 
 void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+        XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     switch (imageNumber) {
       case 1:
         setState(() {

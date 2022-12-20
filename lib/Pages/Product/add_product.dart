@@ -23,7 +23,8 @@ class _AddProductState extends State<AddProduct> {
   CategoryServices _categoryServices = CategoryServices();
   List<DocumentSnapshot> brands = <DocumentSnapshot>[];
   List<DocumentSnapshot> categories = <DocumentSnapshot>[];
-  List<DropdownMenuItem<String>> categoriesDropDown = <DropdownMenuItem<String>>[];
+  List<DropdownMenuItem<String>> categoriesDropDown =
+      <DropdownMenuItem<String>>[];
   List<DropdownMenuItem<String>> brandsDropDown = <DropdownMenuItem<String>>[];
   String _currentCategory;
   String _currentBrand;
@@ -53,7 +54,6 @@ class _AddProductState extends State<AddProduct> {
   File _image2;
   File _image3;
 
-
   @override
   void initState() {
     super.initState();
@@ -74,6 +74,7 @@ class _AddProductState extends State<AddProduct> {
     }
     return items1;
   }
+
   List<DropdownMenuItem<String>> getCategoriesDropdown() {
     List<DropdownMenuItem<String>> items = [];
     for (int i = 0; i < categories.length; i++) {
@@ -91,1855 +92,2051 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        backgroundColor: white,
-        elevation: 0.0,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.close,
-            color: black,
+        appBar: new AppBar(
+          backgroundColor: white,
+          elevation: 0.0,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.close,
+              color: black,
+            ),
+          ),
+          title: Text(
+            "Add product",
+            style: TextStyle(color: black),
           ),
         ),
-        title: Text(
-          "Add product",
-          style: TextStyle(color: black),
-        ),
-      ),
-      body: isLoading ? Container(alignment: Alignment.center,child: Center(child: CircularProgressIndicator()))
-          : LayoutBuilder(
-        builder: (context,constraints){
-          if(constraints.maxWidth < 350){
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-
-
-                        //Choose image of product
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      1);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage1()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      2);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage2()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      3);
-                                },
-                               style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage3()),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      "Enter a product name (30 letters maximum)",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-
-
-
-                    //Add product name
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _productNameController,
-                        decoration: InputDecoration(hintText: "Product name"),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product name";
-                          } else if (value.length > 30) {
-                            return "Product name can't have more than 10 letters";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _productDescribeController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "Product description",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product description";
-                          }return null;
-                        },
-                      ),
-                    ),
-                    Divider(),
-
-                    //Category & brand
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text('Category: ',
-                            style: TextStyle(color: Colors.red, fontSize: 16.0),
-                          ),
-                          DropdownButton(
-                            items: categoriesDropDown,
-                            onChanged: changeSelectedCategory,
-                            value: _currentCategory,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Brand: ',
-                            style: TextStyle(color: Colors.red, fontSize: 16.0),
-                          ),
-                          DropdownButton(
-                            items: brandsDropDown,
-                            onChanged: changeSelectedBrand,
-                            value: _currentBrand,
-                          ),
-                        ],
-                      ),
-                    ),
-
-
-
-                    //Price
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _priceController,
-                        decoration: InputDecoration(hintText: "Price"),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up price";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-
-
-                    //Sale and featured
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
+        body: isLoading
+            ? Container(
+                alignment: Alignment.center,
+                child: Center(child: CircularProgressIndicator()))
+            : LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 350) {
+                    return Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: <Widget>[
-                            Text('Sale:', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: sale, onChanged: (value){
-                              setState(() {
-                                sale = value;
-                              });
-                            }),
+                            Row(
+                              children: <Widget>[
+                                //Choose image of product
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              1);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage1()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              2);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage2()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              3);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage3()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            Text(
+                              "Enter a product name (30 letters maximum)",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+
+                            //Add product name
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _productNameController,
+                                decoration:
+                                    InputDecoration(hintText: "Product name"),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product name";
+                                  } else if (value.length > 30) {
+                                    return "Product name can't have more than 10 letters";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _productDescribeController,
+                                maxLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "Product description",
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product description";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Divider(),
+
+                            //Category & brand
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    'Category: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16.0),
+                                  ),
+                                  DropdownButton(
+                                    items: categoriesDropDown,
+                                    onChanged: changeSelectedCategory,
+                                    value: _currentCategory,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Brand: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16.0),
+                                  ),
+                                  DropdownButton(
+                                    items: brandsDropDown,
+                                    onChanged: changeSelectedBrand,
+                                    value: _currentBrand,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //Price
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _priceController,
+                                decoration: InputDecoration(hintText: "Price"),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up price";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            //Sale and featured
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Sale:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: sale,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            sale = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Featured:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: featured,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            featured = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            sale
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        controller: _oldPriceController,
+                                        decoration: InputDecoration(
+                                            hintText: "New Price"),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Please fill up new price";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        controller: _oldPriceController,
+                                        keyboardType: TextInputType.number,
+                                        decoration:
+                                            InputDecoration(hintText: "Price"),
+                                      ),
+                                    ),
+                                  ),
+
+                            //Colors
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                "Add your Edition",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController1,
+                                      decoration: InputDecoration(
+                                          hintText: "Normal Edition"),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController2,
+                                      decoration: InputDecoration(
+                                        hintText: "Luxury Edition",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController3,
+                                      decoration: InputDecoration(
+                                          hintText: "Limited Edition"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                "Choose Your Sizes",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: Colors.red),
+                              ),
+                            ),
+                            Divider(),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Need Sizes?',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 16.0),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Switch(
+                                    value: isNeedSizes,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isNeedSizes = value;
+                                      });
+                                    }),
+                              ],
+                            ),
+
+                            //Sizes
+                            isNeedSizes
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                            Divider(),
+
+                            //Button Add product
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  90.0, 0.0, 90.0, 0.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  validationAndUpload();
+                                },
+                                child: Text(
+                                  "Add product",
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                              ),
+                            ),
                           ],
                         ),
-                        Row(
+                      ),
+                    );
+                  } else if (constraints.maxWidth > 351 &&
+                      constraints.maxWidth < 410) {
+                    return Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: <Widget>[
-                            Text('Featured:', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: featured,onChanged: (value){
-                              setState(() {
-                                featured = value;
-                              });
-                            }),
+                            Row(
+                              children: <Widget>[
+                                //Choose image of product
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              1);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage1()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              2);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage2()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              3);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage3()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            Text(
+                              "Enter a product name (30 letters maximum)",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+
+                            //Add product name
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _productNameController,
+                                decoration:
+                                    InputDecoration(hintText: "Product name"),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product name";
+                                  } else if (value.length > 30) {
+                                    return "Product name can't have more than 10 letters";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _productDescribeController,
+                                maxLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "Product description",
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product description";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Divider(),
+
+                            //Category & brand
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    'Category: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16.0),
+                                  ),
+                                  DropdownButton(
+                                    items: categoriesDropDown,
+                                    onChanged: changeSelectedCategory,
+                                    value: _currentCategory,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Brand: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16.0),
+                                  ),
+                                  DropdownButton(
+                                    items: brandsDropDown,
+                                    onChanged: changeSelectedBrand,
+                                    value: _currentBrand,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //Price
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                controller: _priceController,
+                                decoration: InputDecoration(hintText: "Price"),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up price";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            //Sale and featured
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Sale:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: sale,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            sale = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Featured:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: featured,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            featured = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            sale
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        controller: _oldPriceController,
+                                        decoration: InputDecoration(
+                                            hintText: "Old Price"),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Please fill up old price";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        controller: _oldPriceController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            hintText: "New Price"),
+                                      ),
+                                    ),
+                                  ),
+
+                            //Colors
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                "Add your Edition",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController1,
+                                      decoration: InputDecoration(
+                                          hintText: "Normal Edition"),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController2,
+                                      decoration: InputDecoration(
+                                        hintText: "Luxury Edition",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 90,
+                                    child: TextFormField(
+                                      controller: _colorController3,
+                                      decoration: InputDecoration(
+                                          hintText: "Limited Edition"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                "Choose Your Sizes",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: Colors.red),
+                              ),
+                            ),
+                            Divider(),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Need Sizes?',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 16.0),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Switch(
+                                    value: isNeedSizes,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isNeedSizes = value;
+                                      });
+                                    }),
+                              ],
+                            ),
+
+                            //Sizes
+                            isNeedSizes
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 30,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                            Divider(),
+
+                            //Button Add product
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  90.0, 0.0, 90.0, 0.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  validationAndUpload();
+                                },
+                                child: Text(
+                                  "Add product",
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                              ),
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                    sale ? Padding(
-                      padding: const EdgeInsets.fromLTRB(10,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          controller: _oldPriceController,
-                          decoration: InputDecoration(hintText: "New Price"),
-                          validator: (value){
-                            if(value.isEmpty){
-                              return "Please fill up new price";
-                            }return null;
-                          },
-                        ),
                       ),
-                    ) : Padding(
-                      padding: const EdgeInsets.fromLTRB(10,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: _oldPriceController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(hintText: "Price"),
-                        ),
-                      ),
-                    ),
-
-                    //Colors
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Text("Choose Your Colors",
-                        style: TextStyle(color: Colors.red, fontSize: 18.0, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController1,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController2,
-                              decoration: InputDecoration(hintText: "Color",),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController3,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        "Choose Your Sizes",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Colors.red),
-                      ),
-                    ),
-                    Divider(),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Need Sizes?', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                        SizedBox(width: 10,),
-                        Switch(value: isNeedSizes, onChanged: (value){
-                          setState(() {
-                            isNeedSizes = value;
-                          });
-                        }),
-                      ],
-                    ),
-
-                    //Sizes
-                    isNeedSizes ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Divider(),
-
-                    //Button Add product
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(90.0, 0.0, 90.0, 0.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          validationAndUpload();
-                        },
-                        child: Text(
-                          "Add product",
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }else if(constraints.maxWidth > 351 && constraints.maxWidth < 410){
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-
-
-                        //Choose image of product
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      1);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage1()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      2);
-                                },
-                               style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage2()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      3);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage3()),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      "Enter a product name (30 letters maximum)",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-
-
-
-                    //Add product name
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _productNameController,
-                        decoration: InputDecoration(hintText: "Product name"),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product name";
-                          } else if (value.length > 30) {
-                            return "Product name can't have more than 10 letters";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _productDescribeController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "Product description",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product description";
-                          }return null;
-                        },
-                      ),
-                    ),
-                    Divider(),
-
-                    //Category & brand
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text('Category: ',
-                            style: TextStyle(color: Colors.red, fontSize: 16.0),
-                          ),
-                          DropdownButton(
-                            items: categoriesDropDown,
-                            onChanged: changeSelectedCategory,
-                            value: _currentCategory,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Brand: ',
-                            style: TextStyle(color: Colors.red, fontSize: 16.0),
-                          ),
-                          DropdownButton(
-                            items: brandsDropDown,
-                            onChanged: changeSelectedBrand,
-                            value: _currentBrand,
-                          ),
-                        ],
-                      ),
-                    ),
-
-
-
-                    //Price
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        controller: _priceController,
-                        decoration: InputDecoration(hintText: "Price"),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up price";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-
-
-                    //Sale and featured
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
+                    );
+                  } else if (constraints.maxWidth > 411 &&
+                      constraints.maxWidth < 500) {
+                    return Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: <Widget>[
-                            Text('Sale:', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: sale, onChanged: (value){
-                              setState(() {
-                                sale = value;
-                              });
-                            }),
+                            Row(
+                              children: <Widget>[
+                                //Choose image of product
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              1);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage1()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              2);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage2()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              3);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage3()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            Text(
+                              "Enter a product name (30 letters maximum)",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+
+                            //Add product name
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _productNameController,
+                                decoration:
+                                    InputDecoration(hintText: "Product name"),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product name";
+                                  } else if (value.length > 30) {
+                                    return "Product name can't have more than 10 letters";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _productDescribeController,
+                                maxLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "Product description",
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product description";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Divider(),
+
+                            //Category & brand
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Category: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 18.0),
+                                  ),
+                                  DropdownButton(
+                                    items: categoriesDropDown,
+                                    onChanged: changeSelectedCategory,
+                                    value: _currentCategory,
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Text(
+                                    'Brand: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 18.0),
+                                  ),
+                                  DropdownButton(
+                                    items: brandsDropDown,
+                                    onChanged: changeSelectedBrand,
+                                    value: _currentBrand,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //Price
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _priceController,
+                                decoration: InputDecoration(hintText: "Price"),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up price";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            //Sale and featured
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Sale:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: sale,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            sale = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Featured:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: featured,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            featured = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            sale
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        controller: _oldPriceController,
+                                        decoration: InputDecoration(
+                                            hintText: "Old Price"),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Please fill up old price";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        controller: _oldPriceController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            hintText: "New Price"),
+                                      ),
+                                    ),
+                                  ),
+
+                            //Colors
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                "Add your Edition",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController1,
+                                      decoration: InputDecoration(
+                                          hintText: "Normal Edition"),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController2,
+                                      decoration: InputDecoration(
+                                        hintText: "Luxury Edition",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController3,
+                                      decoration: InputDecoration(
+                                          hintText: "Limited Edition"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                "Choose Your Sizes",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0,
+                                    color: Colors.red),
+                              ),
+                            ),
+                            Divider(),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Need Sizes?',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18.0),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Switch(
+                                    value: isNeedSizes,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isNeedSizes = value;
+                                      });
+                                    }),
+                              ],
+                            ),
+
+                            //Sizes
+                            isNeedSizes
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                            Divider(),
+
+                            //Button Add product
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  100.0, 0.0, 100.0, 0.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  validationAndUpload();
+                                },
+                                child: Text(
+                                  "Add product",
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                              ),
+                            ),
                           ],
                         ),
-                        Row(
+                      ),
+                    );
+                  } else if (constraints.maxWidth > 501) {
+                    return Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: <Widget>[
-                            Text('Featured:', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: featured,onChanged: (value){
-                              setState(() {
-                                featured = value;
-                              });
-                            }),
+                            Row(
+                              children: <Widget>[
+                                //Choose image of product
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              1);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage1()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              2);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage2()),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: OutlinedButton(
+                                        onPressed: () {
+                                          _selectImage(
+                                              ImagePicker().pickImage(
+                                                  source: ImageSource.gallery),
+                                              3);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          side: BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.8),
+                                              width: 1.0),
+                                        ),
+                                        child: _displayImage3()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            Text(
+                              "Enter a product name (30 letters maximum)",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+
+                            //Add product name
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _productNameController,
+                                decoration:
+                                    InputDecoration(hintText: "Product name"),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product name";
+                                  } else if (value.length > 30) {
+                                    return "Product name can't have more than 10 letters";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _productDescribeController,
+                                maxLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "Product description",
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up product description";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Divider(),
+
+                            //Category & brand
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Category: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 18.0),
+                                  ),
+                                  DropdownButton(
+                                    items: categoriesDropDown,
+                                    onChanged: changeSelectedCategory,
+                                    value: _currentCategory,
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Text(
+                                    'Brand: ',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 18.0),
+                                  ),
+                                  DropdownButton(
+                                    items: brandsDropDown,
+                                    onChanged: changeSelectedBrand,
+                                    value: _currentBrand,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //Price
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                controller: _priceController,
+                                decoration: InputDecoration(hintText: "Price"),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please fill up price";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            //Sale and featured
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Sale:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: sale,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            sale = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Featured:',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Switch(
+                                        value: featured,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            featured = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            sale
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        controller: _oldPriceController,
+                                        decoration: InputDecoration(
+                                            hintText: "Old Price"),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Please fill up old price";
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 0, 200, 10),
+                                    child: Container(
+                                      width: 120,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        controller: _oldPriceController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                            hintText: "New Price"),
+                                      ),
+                                    ),
+                                  ),
+
+                            //Colors
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                "Add your Edition",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController1,
+                                      decoration: InputDecoration(
+                                          hintText: "Normal Edition"),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController2,
+                                      decoration: InputDecoration(
+                                        hintText: "Luxury Edition",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 120,
+                                    child: TextFormField(
+                                      controller: _colorController3,
+                                      decoration: InputDecoration(
+                                          hintText: "Limited Edition"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                "Choose Your Sizes",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0,
+                                    color: Colors.red),
+                              ),
+                            ),
+                            Divider(),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Need Sizes?',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18.0),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Switch(
+                                    value: isNeedSizes,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isNeedSizes = value;
+                                      });
+                                    }),
+                              ],
+                            ),
+
+                            //Sizes
+                            isNeedSizes
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController1,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController2,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController3,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController4,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController5,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 40,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _sizeController6,
+                                            decoration: InputDecoration(
+                                                hintText: "Size"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                            Divider(),
+
+                            //Button Add product
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  100.0, 0.0, 100.0, 0.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  validationAndUpload();
+                                },
+                                child: Text(
+                                  "Add product",
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                              ),
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                    sale ? Padding(
-                      padding: const EdgeInsets.fromLTRB(10,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          controller: _oldPriceController,
-                          decoration: InputDecoration(hintText: "Old Price"),
-                          validator: (value){
-                            if(value.isEmpty){
-                              return "Please fill up old price";
-                            }return null;
-                          },
-                        ),
                       ),
-                    ) : Padding(
-                      padding: const EdgeInsets.fromLTRB(10,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: _oldPriceController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(hintText: "New Price"),
-                        ),
-                      ),
-                    ),
-
-                    //Colors
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Text("Choose Your Colors",
-                        style: TextStyle(color: Colors.red, fontSize: 18.0, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController1,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController2,
-                              decoration: InputDecoration(hintText: "Color",),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 90,
-                            child: TextFormField(
-                              controller: _colorController3,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        "Choose Your Sizes",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Colors.red),
-                      ),
-                    ),
-                    Divider(),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Need Sizes?', style: TextStyle(color: Colors.red, fontSize: 16.0),),
-                        SizedBox(width: 10,),
-                        Switch(value: isNeedSizes, onChanged: (value){
-                          setState(() {
-                            isNeedSizes = value;
-                          });
-                        }),
-                      ],
-                    ),
-
-                    //Sizes
-                    isNeedSizes ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 30,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Divider(),
-
-                    //Button Add product
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(90.0, 0.0, 90.0, 0.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          validationAndUpload();
-                        },
-                        child: Text(
-                          "Add product",
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }else if(constraints.maxWidth > 411 && constraints.maxWidth < 500){
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-
-
-                        //Choose image of product
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(source: ImageSource.gallery),
-                                      1);
-                                },
-                               style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage1()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      2);
-                                },
-                               style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage2()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      3);
-                                },
-                               style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage3()),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      "Enter a product name (30 letters maximum)",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-
-
-
-                    //Add product name
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _productNameController,
-                        decoration: InputDecoration(hintText: "Product name"),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product name";
-                          } else if (value.length > 30) {
-                            return "Product name can't have more than 10 letters";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _productDescribeController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "Product description",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product description";
-                          }return null;
-                        },
-                      ),
-                    ),
-                    Divider(),
-
-
-
-
-                    //Category & brand
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Row(
-                        children: <Widget>[
-                          Text('Category: ',
-                            style: TextStyle(color: Colors.red, fontSize: 18.0),
-                          ),
-                          DropdownButton(
-                            items: categoriesDropDown,
-                            onChanged: changeSelectedCategory,
-                            value: _currentCategory,
-                          ),
-                          SizedBox(width: 50,),
-                          Text(
-                            'Brand: ',
-                            style: TextStyle(color: Colors.red, fontSize: 18.0),
-                          ),
-                          DropdownButton(
-                            items: brandsDropDown,
-                            onChanged: changeSelectedBrand,
-                            value: _currentBrand,
-                          ),
-                        ],
-                      ),
-                    ),
-
-
-
-                    //Price
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _priceController,
-                        decoration: InputDecoration(hintText: "Price"),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up price";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-
-
-                    //Sale and featured
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('Sale:', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: sale, onChanged: (value){
-                              setState(() {
-                                sale = value;
-                              });
-                            }),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text('Featured:', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: featured,onChanged: (value){
-                              setState(() {
-                                featured = value;
-                              });
-                            }),
-                          ],
-                        ),
-                      ],
-                    ),
-                    sale ? Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          controller: _oldPriceController,
-                          decoration: InputDecoration(hintText: "Old Price"),
-                          validator: (value){
-                            if(value.isEmpty){
-                              return "Please fill up old price";
-                            }return null;
-                          },
-                        ),
-                      ),
-                    ) : Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: _oldPriceController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(hintText: "New Price"),
-                        ),
-                      ),
-                    ),
-
-                    //Colors
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Text("Choose Your Colors",
-                        style: TextStyle(color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController1,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController2,
-                              decoration: InputDecoration(hintText: "Color",),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController3,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        "Choose Your Sizes",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            color: Colors.red),
-                      ),
-                    ),
-                    Divider(),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Need Sizes?', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                        SizedBox(width: 10,),
-                        Switch(value: isNeedSizes, onChanged: (value){
-                          setState(() {
-                            isNeedSizes = value;
-                          });
-                        }),
-                      ],
-                    ),
-
-                    //Sizes
-                    isNeedSizes ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Divider(),
-
-                    //Button Add product
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(100.0, 0.0, 100.0, 0.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          validationAndUpload();
-                        },
-                        child: Text(
-                          "Add product",
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }else if(constraints.maxWidth > 501){
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-
-
-                        //Choose image of product
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      1);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage1()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      2);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage2()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  _selectImage(
-                                      ImagePicker().pickImage(
-                                          source: ImageSource.gallery),
-                                      3);
-                                },
-                                style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
-                                child: _displayImage3()),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      "Enter a product name (30 letters maximum)",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-
-
-
-                    //Add product name
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _productNameController,
-                        decoration: InputDecoration(hintText: "Product name"),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product name";
-                          } else if (value.length > 30) {
-                            return "Product name can't have more than 10 letters";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _productDescribeController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: "Product description",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up product description";
-                          }return null;
-                        },
-                      ),
-                    ),
-                    Divider(),
-
-
-
-
-                    //Category & brand
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Row(
-                        children: <Widget>[
-                          Text('Category: ',
-                            style: TextStyle(color: Colors.red, fontSize: 18.0),
-                          ),
-                          DropdownButton(
-                            items: categoriesDropDown,
-                            onChanged: changeSelectedCategory,
-                            value: _currentCategory,
-                          ),
-                          SizedBox(width: 50,),
-                          Text(
-                            'Brand: ',
-                            style: TextStyle(color: Colors.red, fontSize: 18.0),
-                          ),
-                          DropdownButton(
-                            items: brandsDropDown,
-                            onChanged: changeSelectedBrand,
-                            value: _currentBrand,
-                          ),
-                        ],
-                      ),
-                    ),
-
-
-
-                    //Price
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextFormField(
-                        controller: _priceController,
-                        decoration: InputDecoration(hintText: "Price"),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please fill up price";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-
-
-                    //Sale and featured
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('Sale:', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: sale, onChanged: (value){
-                              setState(() {
-                                sale = value;
-                              });
-                            }),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text('Featured:', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                            SizedBox(width: 10,),
-                            Switch(value: featured,onChanged: (value){
-                              setState(() {
-                                featured = value;
-                              });
-                            }),
-                          ],
-                        ),
-                      ],
-                    ),
-                    sale ? Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          controller: _oldPriceController,
-                          decoration: InputDecoration(hintText: "Old Price"),
-                          validator: (value){
-                            if(value.isEmpty){
-                              return "Please fill up old price";
-                            }return null;
-                          },
-                        ),
-                      ),
-                    ) : Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,200,10),
-                      child: Container(
-                        width: 120,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: _oldPriceController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(hintText: "New Price"),
-                        ),
-                      ),
-                    ),
-
-                    //Colors
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Text("Choose Your Colors",
-                        style: TextStyle(color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController1,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController2,
-                              decoration: InputDecoration(hintText: "Color",),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 120,
-                            child: TextFormField(
-                              controller: _colorController3,
-                              decoration: InputDecoration(hintText: "Color"),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        "Choose Your Sizes",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            color: Colors.red),
-                      ),
-                    ),
-                    Divider(),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Need Sizes?', style: TextStyle(color: Colors.red, fontSize: 18.0),),
-                        SizedBox(width: 10,),
-                        Switch(value: isNeedSizes, onChanged: (value){
-                          setState(() {
-                            isNeedSizes = value;
-                          });
-                        }),
-                      ],
-                    ),
-
-                    //Sizes
-                    isNeedSizes ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController1,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController2,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController3,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController4,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController5,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 40,
-                            child: TextFormField(
-                              enabled: false,
-                              controller: _sizeController6,
-                              decoration: InputDecoration(hintText: "Size"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Divider(),
-
-                    //Button Add product
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(100.0, 0.0, 100.0, 0.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          validationAndUpload();
-                        },
-                        child: Text(
-                          "Add product",
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }else return null;
-        },
-      )
-    );
+                    );
+                  } else
+                    return null;
+                },
+              ));
   }
 
   _getCategories() async {
@@ -1969,7 +2166,8 @@ class _AddProductState extends State<AddProduct> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+    XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     switch (imageNumber) {
       case 1:
         setState(() {
@@ -2025,17 +2223,29 @@ class _AddProductState extends State<AddProduct> {
 
   //Validation and add product's info to database
   void validationAndUpload() async {
-    if(_formKey.currentState.validate()){
+    if (_formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
-      if(_image1 != null && _image2 != null && _image3 != null){
-        if(_colorController1.text != "" && _colorController2.text != "" && _colorController3.text != ""){
-          if(isNeedSizes){
-            if(_sizeController1.text != "" && _sizeController2.text != "" && _sizeController3.text != "" &&
-            _sizeController4.text != "" && _sizeController5.text != "" && _sizeController6.text != ""){
-              selectSizes = [_sizeController1.text,_sizeController2.text,_sizeController3.text,
-                _sizeController4.text,_sizeController5.text,_sizeController6.text];
+      if (_image1 != null && _image2 != null && _image3 != null) {
+        if (_colorController1.text != "" &&
+            _colorController2.text != "" &&
+            _colorController3.text != "") {
+          if (isNeedSizes) {
+            if (_sizeController1.text != "" &&
+                _sizeController2.text != "" &&
+                _sizeController3.text != "" &&
+                _sizeController4.text != "" &&
+                _sizeController5.text != "" &&
+                _sizeController6.text != "") {
+              selectSizes = [
+                _sizeController1.text,
+                _sizeController2.text,
+                _sizeController3.text,
+                _sizeController4.text,
+                _sizeController5.text,
+                _sizeController6.text
+              ];
               String imageUrl1;
               String imageUrl2;
               String imageUrl3;
@@ -2044,45 +2254,43 @@ class _AddProductState extends State<AddProduct> {
 
               final String picture1 =
                   "1${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-              UploadTask task1 =
-              storage.ref().child(picture1).putFile(_image1);
+              UploadTask task1 = storage.ref().child(picture1).putFile(_image1);
 
               final String picture2 =
                   "2${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-              UploadTask task2 =
-              storage.ref().child(picture2).putFile(_image2);
+              UploadTask task2 = storage.ref().child(picture2).putFile(_image2);
 
               final String picture3 =
                   "3${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-              UploadTask task3 =
-              storage.ref().child(picture3).putFile(_image3);
+              UploadTask task3 = storage.ref().child(picture3).putFile(_image3);
 
-              TaskSnapshot snapshot1 =
-              await task1.then((snapshot) => snapshot);
-              TaskSnapshot snapshot2 =
-              await task2.then((snapshot) => snapshot);
-              TaskSnapshot snapshot3 =
-              await task3.then((snapshot) => snapshot);
+              TaskSnapshot snapshot1 = await task1.then((snapshot) => snapshot);
+              TaskSnapshot snapshot2 = await task2.then((snapshot) => snapshot);
+              TaskSnapshot snapshot3 = await task3.then((snapshot) => snapshot);
 
               imageUrl1 = await snapshot1.ref.getDownloadURL();
               imageUrl2 = await snapshot2.ref.getDownloadURL();
               imageUrl3 = await snapshot3.ref.getDownloadURL();
 
               List<String> imageList = [imageUrl1, imageUrl2, imageUrl3];
-              colors = [_colorController1.text, _colorController2.text, _colorController3.text];
+              colors = [
+                _colorController1.text,
+                _colorController2.text,
+                _colorController3.text
+              ];
 
               _productServices.uploadProduct(
-                  productName: _productNameController.text,
-                  price: double.parse(_priceController.text),
-                  oldPrice: sale ? double.parse(_oldPriceController.text) : 0,
-                  description: _productDescribeController.text,
-                  images: imageList,
-                  brand: _currentBrand,
-                  category: _currentCategory,
-                  sizes: selectSizes,
-                  colors: colors,
-                  sale: sale,
-                  featured: featured,
+                productName: _productNameController.text,
+                price: double.parse(_priceController.text),
+                oldPrice: sale ? double.parse(_oldPriceController.text) : 0,
+                description: _productDescribeController.text,
+                images: imageList,
+                brand: _currentBrand,
+                category: _currentCategory,
+                sizes: selectSizes,
+                colors: colors,
+                sale: sale,
+                featured: featured,
               );
               //_formKey.currentState.reset();
               setState(() {
@@ -2095,7 +2303,7 @@ class _AddProductState extends State<AddProduct> {
                   backgroundColor: Colors.red,
                   timeInSecForIosWeb: 2);
               Navigator.pop(context);
-            }else{
+            } else {
               setState(() {
                 isLoading = false;
               });
@@ -2106,7 +2314,7 @@ class _AddProductState extends State<AddProduct> {
                   backgroundColor: Colors.black,
                   timeInSecForIosWeb: 2);
             }
-          }else{
+          } else {
             selectSizes = [];
             String imageUrl1;
             String imageUrl2;
@@ -2116,45 +2324,43 @@ class _AddProductState extends State<AddProduct> {
 
             final String picture1 =
                 "1${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-            UploadTask task1 =
-            storage.ref().child(picture1).putFile(_image1);
+            UploadTask task1 = storage.ref().child(picture1).putFile(_image1);
 
             final String picture2 =
                 "2${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-            UploadTask task2 =
-            storage.ref().child(picture2).putFile(_image2);
+            UploadTask task2 = storage.ref().child(picture2).putFile(_image2);
 
             final String picture3 =
                 "3${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-            UploadTask task3 =
-            storage.ref().child(picture3).putFile(_image3);
+            UploadTask task3 = storage.ref().child(picture3).putFile(_image3);
 
-            TaskSnapshot snapshot1 =
-            await task1.then((snapshot) => snapshot);
-            TaskSnapshot snapshot2 =
-            await task2.then((snapshot) => snapshot);
-            TaskSnapshot snapshot3 =
-            await task3.then((snapshot) => snapshot);
+            TaskSnapshot snapshot1 = await task1.then((snapshot) => snapshot);
+            TaskSnapshot snapshot2 = await task2.then((snapshot) => snapshot);
+            TaskSnapshot snapshot3 = await task3.then((snapshot) => snapshot);
 
             imageUrl1 = await snapshot1.ref.getDownloadURL();
             imageUrl2 = await snapshot2.ref.getDownloadURL();
             imageUrl3 = await snapshot3.ref.getDownloadURL();
 
             List<String> imageList = [imageUrl1, imageUrl2, imageUrl3];
-            colors = [_colorController1.text, _colorController2.text, _colorController3.text];
+            colors = [
+              _colorController1.text,
+              _colorController2.text,
+              _colorController3.text
+            ];
 
             _productServices.uploadProduct(
-                productName: _productNameController.text,
-                price: double.parse(_priceController.text),
-                oldPrice:sale ? double.parse(_oldPriceController.text) : 0,
-                description: _productDescribeController.text,
-                images: imageList,
-                brand: _currentBrand,
-                category: _currentCategory,
-                sizes: selectSizes,
-                colors: colors,
-                sale: sale,
-                featured: featured,
+              productName: _productNameController.text,
+              price: double.parse(_priceController.text),
+              oldPrice: sale ? double.parse(_oldPriceController.text) : 0,
+              description: _productDescribeController.text,
+              images: imageList,
+              brand: _currentBrand,
+              category: _currentCategory,
+              sizes: selectSizes,
+              colors: colors,
+              sale: sale,
+              featured: featured,
             );
             //_formKey.currentState.reset();
             setState(() {
@@ -2168,7 +2374,7 @@ class _AddProductState extends State<AddProduct> {
                 timeInSecForIosWeb: 2);
             Navigator.pop(context);
           }
-        }else{
+        } else {
           setState(() {
             isLoading = false;
           });
@@ -2179,7 +2385,7 @@ class _AddProductState extends State<AddProduct> {
               backgroundColor: Colors.black,
               timeInSecForIosWeb: 2);
         }
-      }else{
+      } else {
         setState(() {
           isLoading = false;
         });
@@ -2190,7 +2396,7 @@ class _AddProductState extends State<AddProduct> {
             backgroundColor: Colors.black,
             timeInSecForIosWeb: 2);
       }
-    }else{
+    } else {
       setState(() {
         isLoading = false;
       });
@@ -2203,17 +2409,3 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

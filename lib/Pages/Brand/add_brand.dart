@@ -158,7 +158,8 @@ class _AddBrandState extends State<AddBrand> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+        XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     setState(() {
       _image = tempImg;
     });

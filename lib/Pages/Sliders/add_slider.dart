@@ -145,7 +145,8 @@ class _AddSliderState extends State<AddSlider> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+        XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     setState(() {
       _image = tempImg;
     });

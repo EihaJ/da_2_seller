@@ -59,8 +59,8 @@ class _UpdateSliderState extends State<UpdateSlider> {
                           child: OutlinedButton(
                               onPressed: () {
                                 _selectImage(
-                                    ImagePicker().pickImage(
-                                        source: ImageSource.gallery),
+                                    ImagePicker()
+                                        .pickImage(source: ImageSource.gallery),
                                     1);
                               },
                               style: ElevatedButton.styleFrom(
@@ -141,7 +141,8 @@ class _UpdateSliderState extends State<UpdateSlider> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+        XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     setState(() {
       _image = tempImg;
       isDisplaying = true;
@@ -171,8 +172,7 @@ class _UpdateSliderState extends State<UpdateSlider> {
         final String picture =
             "${sliderNameController.text}${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
         UploadTask task = storage.ref().child(picture).putFile(_image);
-        TaskSnapshot snapshot1 =
-            await task.then((snapshot) => snapshot);
+        TaskSnapshot snapshot1 = await task.then((snapshot) => snapshot);
         imageUrl = await snapshot1.ref.getDownloadURL();
         imageNew = imageUrl;
       } else {

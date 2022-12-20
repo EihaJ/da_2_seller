@@ -66,7 +66,11 @@ class _AddCategoryState extends State<AddCategory> {
                                             source: ImageSource.gallery),
                                         1);
                                   },
-                                  style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.8), width: 1.0),),
+                                  style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                        color: Colors.grey.withOpacity(0.8),
+                                        width: 1.0),
+                                  ),
                                   child: _displayImage()),
                             ),
                           ),
@@ -103,8 +107,8 @@ class _AddCategoryState extends State<AddCategory> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
                             ),
                           ),
                         ],
@@ -115,7 +119,9 @@ class _AddCategoryState extends State<AddCategory> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+    XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
+    //File file = File( _imageFile.path )
     setState(() {
       _image = tempImg;
     });
@@ -150,8 +156,7 @@ class _AddCategoryState extends State<AddCategory> {
             "${_categoryNameController.text}${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
         UploadTask task = storage.ref().child(picture).putFile(_image);
 
-        TaskSnapshot snapshot =
-            await task.then((snapshot) => snapshot);
+        TaskSnapshot snapshot = await task.then((snapshot) => snapshot);
 
         imageUrl = await snapshot.ref.getDownloadURL();
 

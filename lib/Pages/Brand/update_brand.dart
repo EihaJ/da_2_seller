@@ -163,7 +163,8 @@ class _UpdateBrandState extends State<UpdateBrand> {
   }
 
   void _selectImage(Future<XFile> pickImage, int imageNumber) async {
-    File tempImg = await pickImage as File;
+        XFile xtempImg = await pickImage;
+    File tempImg = File(xtempImg.path);
     setState(() {
       _image = tempImg;
       isDisplaying = true;
